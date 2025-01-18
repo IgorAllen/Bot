@@ -2,37 +2,37 @@ import random
 import discord
 from discord.ext import commands
 
-# Configuração do bot
-TOKEN = 'Datum'  # Substitua pelo token do seu bot
-PREFIX = '!'  # Prefixo para os comandos do bot
+# Bot configuration
+TOKEN = 'Datum'  # Replace with your bot's token
+PREFIX = '!'  # Prefix for bot commands
 
 bot = commands.Bot(command_prefix=PREFIX, intents=discord.Intents.default())
 
-# Evento para indicar que o bot está online
+# Event to indicate that the bot is online
 @bot.event
 async def on_ready():
-    print(f"{bot.user.name} está online e pronto para rolar dados!")
+    print(f"{bot.user.name} is online and ready to roll dice!")
 
-# Comando para rolar dados
-@bot.command(name='rolar')
-async def rolar_dado(ctx, tipo_dado: str):
+# Command to roll dice
+@bot.command(name='roll')
+async def roll_dice(ctx, dice_type: str):
     try:
-        # Verifica se o formato está correto (ex: 1d20, 2d6)
-        quantidade, faces = map(int, tipo_dado.lower().split('d'))
+        # Check if the format is correct (e.g., 1d20, 2d6)
+        quantity, faces = map(int, dice_type.lower().split('d'))
         
-        if quantidade <= 0 or faces <= 0:
-            await ctx.send("Por favor, insira valores positivos para a quantidade e as faces do dado.")
+        if quantity <= 0 or faces <= 0:
+            await ctx.send("Please enter positive values for quantity and faces of the dice.")
             return
 
-        # Rola os dados e calcula o total
-        resultados = [random.randint(1, faces) for _ in range(quantidade)]
-        total = sum(resultados)
+        # Roll the dice and calculate the total
+        results = [random.randint(1, faces) for _ in range(quantity)]
+        total = sum(results)
 
-        # Envia o resultado no chat
-        await ctx.send(f"🎲 Rolando {quantidade}d{faces}: {resultados} \nTotal: {total}")
+        # Send the result in the chat
+        await ctx.send(f"🎲 Rolling {quantity}d{faces}: {results} \nTotal: {total}")
 
     except ValueError:
-        await ctx.send("Formato inválido! Use o formato 'XdY', onde X é a quantidade de dados e Y o número de faces (ex: 1d20, 2d6).")
+        await ctx.send("Invalid format! Use the format 'XdY', where X is the quantity of dice and Y is the number of faces (e.g., 1d20, 2d6).")
 
-# Inicia o bot
+# Run the bot
 bot.run(TOKEN)
